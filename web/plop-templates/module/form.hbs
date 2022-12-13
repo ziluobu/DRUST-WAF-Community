@@ -1,0 +1,83 @@
+<template>
+    <div v-loading="loading">
+        <el-form ref="form" :model="form" :rules="rules" label-width="120px" label-suffix="：">
+            <el-form-item label="标题" prop="title">
+                <el-input v-model="form.title" placeholder="请输入标题" />
+            </el-form-item>
+        </el-form>
+    </div>
+</template>
+
+<script>
+export default {
+    props: {
+        id: {
+            type: [Number, String],
+            default: ''
+        }
+    },
+    data() {
+        return {
+            loading: false,
+            form: {
+                id: this.id,
+                title: ''
+            },
+            rules: {
+                title: [
+                    { required: true, message: '请输入标题', trigger: 'blur' }
+                ]
+            }
+        }
+    },
+    mounted() {
+        if (this.form.id != '') {
+            this.getInfo()
+        }
+    },
+    methods: {
+        getInfo() {
+            this.loading = true
+            this.$api.get('mock/{{#if relativePath}}{{ relativePath }}/{{/if}}{{ snakeCase moduleName }}/detail', {
+                params: {
+                    id: this.form.id
+                }
+            }).then(res => {
+                this.loading = false
+                this.form.title = res.data.title
+            })
+        },
+        submit(callback) {
+            if (this.form.id == '') {
+                this.$refs['form'].validate(valid => {
+                    if (valid) {
+                        this.$api.post('mock/{{#if relativePath}}{{ relativePath }}/{{/if}}{{ snakeCase moduleName }}/create', this.form).then(() => {
+                            this.$message.success({
+                                message: '模拟新增成功',
+                                center: true
+                            })
+                            callback && callback()
+                        })
+                    }
+                })
+            } else {
+                this.$refs['form'].validate(valid => {
+                    if (valid) {
+                        this.$api.post('mock/{{#if relativePath}}{{ relativePath }}/{{/if}}{{ snakeCase moduleName }}/edit', this.form).then(() => {
+                            this.$message.success({
+                                message: '模拟编辑成功',
+                                center: true
+                            })
+                            callback && callback()
+                        })
+                    }
+                })
+            }
+        }
+    }
+}
+</script>
+
+<style lang="scss" scoped>
+// scss
+</style>

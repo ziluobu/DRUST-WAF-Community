@@ -1,0 +1,48 @@
+<template>
+    <div>
+        <page-header :title="$route.name == 'routerName' ? '新增{{ cname }}' : '编辑{{ cname }}'">
+            <el-button icon="el-icon-arrow-left" size="mini" round @click="$router.go(-1)">返 回</el-button>
+        </page-header>
+        <page-main>
+            <el-row>
+                <el-col :md="24" :lg="16">
+                    <DetailForm :id="$route.params.id" ref="form" />
+                </el-col>
+            </el-row>
+        </page-main>
+        <fixed-action-bar>
+            <el-button type="primary" @click="onSubmit">提 交</el-button>
+            <el-button @click="onCancel">取 消</el-button>
+        </fixed-action-bar>
+    </div>
+</template>
+
+<script>
+import DetailForm from './components/DetailForm/index'
+
+export default {
+    name: '{{ properCase componentName }}',
+    components: {
+        DetailForm
+    },
+    data() {
+        return {}
+    },
+    mounted() {},
+    methods: {
+        onSubmit() {
+            this.$refs['form'].submit(() => {
+                this.$eventBus.$emit('get-data-list')
+                this.$router.back()
+            })
+        },
+        onCancel() {
+            this.$router.back()
+        }
+    }
+}
+</script>
+
+<style lang="scss" scoped>
+// scss
+</style>
