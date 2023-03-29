@@ -1,0 +1,8 @@
+create ipdeny hash:net family inet hashsize 1024 maxelem 1000000add ipdeny 10.10.10.1/24
+add ipdeny 117.158.215.119
+add ipdeny 10.10.100.1/24
+add ipdeny 1.193.76.27
+add ipdeny 10.10.114.182
+add ipdeny 10.10.114.1/24
+add ipdeny 211.138.31.28
+add ipdeny 123.160.247.68

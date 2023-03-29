@@ -1,0 +1,27 @@
+// 全局变量
+
+// 这是一个复合变量
+// 当布局设置为 adaption-min-width 时，它代表 最小宽度
+// 当布局设置为 center 时，它代表 固定宽度
+// 当布局设置为 center-max-width 时，它代表 最大宽度
+$g-app-width: 1400px;
+
+// 头部宽度（默认自适应宽度，可固定宽度，固定宽度后为居中显示）
+$g-header-width: 100%;
+// 头部高度
+$g-header-height: 70px;
+// 侧边栏宽度
+$g-main-sidebar-width: 60px;
+$g-sub-sidebar-width: 220px;
+// 侧边栏Logo高度
+$g-sidebar-logo-height: 50px;
+// 标签栏高度
+$g-tabbar-height: 40px;
+// 顶部导航栏高度
+$g-topbar-height: 50px;
+
+// 输出给js使用
+:export {
+    g_main_sidebar_width: $g-main-sidebar-width;
+    g_sub_sidebar_width: $g-sub-sidebar-width;
+}

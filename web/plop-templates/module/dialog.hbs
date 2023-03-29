@@ -1,0 +1,52 @@
+<template>
+    <div>
+        {{!-- dialog 关闭的时候切记需要销毁 dialog 中的元素，但提供的 destroy-on-close 有bug，需等 element 发新版，所以目前在 dialog 里的元素手动做了销毁 --}}
+        {{!-- 为什么需要销毁 dialog 中的元素？因为该 dialog 为详情表单，新增的时候会用到，编辑的时候也会用到，不销毁则需要增加代码做处理，例如需要监听当传入的 id，当变 id 更后，需要重新执行生命周期进行表单初始化，同时关闭 dialog 时还需要清空表单，避免出现再次打开 dialog 时表单还保留上一次的信息数据，当表单复杂度上去后，维护这块的成本过高 --}}
+        <el-dialog :visible.sync="myVisible" :title="id == '' ? '新增{{ cname }}' : '编辑{{ cname }}'" width="600px" :close-on-click-modal="false" append-to-body destroy-on-close>
+            <DetailForm v-if="myVisible" ref="form" v-bind="$props" />
+            <div slot="footer">
+                <el-button @click="onCancel">取 消</el-button>
+                <el-button type="primary" @click="onSubmit">确 定</el-button>
+            </div>
+        </el-dialog>
+    </div>
+</template>
+
+<script>
+import DetailForm from '../DetailForm/index'
+
+export default {
+    components: {
+        DetailForm
+    },
+    props: {
+        ...DetailForm.props,
+        visible: {
+            type: Boolean,
+            default: false
+        }
+    },
+    computed: {
+        myVisible: {
+            get: function() {
+                return this.visible
+            },
+            set: function(val) {
+                this.$emit('update:visible', val)
+            }
+        }
+    },
+    methods: {
+        onSubmit() {
+            // submit() 为组件内部方法
+            this.$refs['form'].submit(() => {
+                this.$emit('success')
+                this.onCancel()
+            })
+        },
+        onCancel() {
+            this.myVisible = false
+        }
+    }
+}
+</script>
